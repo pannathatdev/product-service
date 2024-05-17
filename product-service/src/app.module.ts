@@ -12,4 +12,4 @@ import { ProductSchema } from './product/schemas/product.schema';
   controllers: [ProductController],
   providers: [ProductService],
 })
-export class AppModule {}
+export class AppModule{}

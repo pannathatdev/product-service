@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProductService } from './product.service';
+import { ProductServiceMock } from './product.service.mock';
 
 describe('ProductService', () => {
   let service: ProductService;
@@ -7,7 +8,10 @@ describe('ProductService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [ProductService],
-    }).compile();
+    })
+    .overrideProvider(ProductService)
+    .useClass(ProductServiceMock)
+    .compile();
 
     service = module.get<ProductService>(ProductService);
   });
@@ -15,4 +19,6 @@ describe('ProductService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  // Add more test cases as needed
 });

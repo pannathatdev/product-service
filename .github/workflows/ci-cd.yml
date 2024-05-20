@@ -18,7 +18,7 @@ jobs:
         ports:
           - 27017:27017
     env:
-      MONGO_URI: mongodb://localhost:27017/nest
+      MONGO_URI: mongodb+srv://pipo:Aa123654@pipo.gqdqli4.mongodb.net/product
 
     steps:
       - name: Checkout repository

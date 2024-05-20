@@ -1,6 +1,18 @@
-version: '3'
+version: '3.7'
+
 services:
-  app:
-    image: product
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
     ports:
-      - "8000:8000"  # เปลี่ยนพอร์ตตามที่ต้องการ
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - mongodb_network
+
+networks:
+  mongodb_network:
+
+volumes:
+  mongodb_data:

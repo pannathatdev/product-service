@@ -12,7 +12,7 @@ describe('AppController', () => {
       }).compile();
   
       appController = app.get<AppController>(AppController);
-    }, 50000); // เพิ่ม timeout ที่ 10 วินาที (10000 milliseconds)
+    }); // เพิ่ม timeout ที่ 10 วินาที (10000 milliseconds)
     
     it('root should return "Hello World!"', () => {
       expect(appController.getHello()).toBe('Hello World!');

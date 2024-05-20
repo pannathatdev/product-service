@@ -27,6 +27,7 @@ jobs:
 
       - name: Build the Docker image
         run: docker build -t product .
+        working-directory: ./product-service
 
   deploy:
     runs-on: ubuntu-latest
@@ -46,6 +47,7 @@ jobs:
         run: |
           docker build -t pannathatdev/product:latest .
           docker push pannathatdev/product:latest
+        working-directory: ./product-service
 
       - name: Deploy to production
         env:

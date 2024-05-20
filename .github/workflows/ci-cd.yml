@@ -12,40 +12,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      mongo:
-        image: mongo:latest
-        ports:
-          - 27017:27017
-
-    env:
-      MONGO_URI: mongodb://localhost:27017/nest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: '18'
+          node-version: 18
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./product-service
+
+      - name: Run tests
+        run: npm test
 
       - name: Build the Docker image
         run: docker build -t product .
-        working-directory: ./product-service
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: pannathatdev
-          password: dckr_pat_RUMz0NKUUwMZzFEElvaufKdNQ3g
-
-      - name: Push the Docker image
-        run: docker push product:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -55,9 +38,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: pannathatdev
+          password: dckr_pat_RUMz0NKUUwMZzFEElvaufKdNQ3g
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t pannathatdev/product:latest .
+          docker push pannathatdev/product:latest
+
       - name: Deploy to production
         env:
           MONGO_URI: mongodb+srv://pipo:Aa123654@pipo.gqdqli4.mongodb.net/product
         run: |
           echo "Deploying to production..."
-          docker run -d -p 8000:3000 -e MONGO_URI=$MONGO_URI product:latest
+          docker run -d -p 8000:8000 -e MONGO_URI=$MONGO_URI pannathatdev/product:latest

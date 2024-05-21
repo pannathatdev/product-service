@@ -29,4 +29,7 @@ export class ProductService {
     return await this.productModel.findByIdAndDelete(id);
 }
 
+async loadMockProducts(createProductDto: CreateProductDto[]): Promise<void> {
+  await this.productModel.insertMany(createProductDto);
+}
 }

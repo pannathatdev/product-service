@@ -33,6 +33,14 @@ jobs:
         run: npm install
         working-directory: ./product-service
 
+      - name: Run unit tests
+        run: npm run test:unit
+        working-directory: ./product-service
+
+      - name: Load Mockup Data
+        run: node mockup-loader.js
+        working-directory: ./product-service
+
       - name: Build the Docker image
         run: docker build -t product .
         working-directory: ./product-service

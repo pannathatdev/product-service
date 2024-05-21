@@ -38,7 +38,7 @@ jobs:
         working-directory: ./product-service
 
       - name: Load Mockup Data
-        run: node mockup-loader.js
+        run: node src/product/mockup-loader.js
         working-directory: ./product-service
 
       - name: Build the Docker image

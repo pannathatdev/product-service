@@ -1,4 +1,4 @@
-name: CI/CD Pipeline - Product Service
+name: CI/CD Pipeline
 
 on:
   push:
@@ -12,6 +12,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+    env:
+      MONGO_URI: mongodb+srv://pipo:Aa123654@pipo.gqdqli4.mongodb.net/order
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -23,36 +31,43 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: ./order-service
+
+      - name: Run unit tests
+        run: npm run test:unit
+        working-directory: ./order-service
+
+      - name: Load Mockup Data
+        run: node mockup-loader.js
+        working-directory: ./order-service
 
       - name: Build the Docker image
-        run: docker build -t product-service .
-        working-directory: ./product-service
-
-      # Add more steps here for testing, linting, etc.
+        run: docker build -t order .
+        working-directory: ./order-service
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
 
     steps:
-        - name: Checkout repository
-          uses: actions/checkout@v2
-  
-        - name: Log in to Docker Hub
-          uses: docker/login-action@v2
-          with:
-            username: pannathatdev
-            password: dckr_pat_RUMz0NKUUwMZzFEElvaufKdNQ3g
-  
-        - name: Build and push Docker image
-          run: |
-            docker build -t pannathatdev/product:latest .
-            docker push pannathatdev/product:latest
-          working-directory: ./product-service
-  
-        - name: Deploy to production
-          env:
-            MONGO_URI: mongodb+srv://pipo:Aa123654@pipo.gqdqli4.mongodb.net/product
-          run: |
-            echo "Deploying to production..."
-            docker run -d -p 8000:8000 -e MONGO_URI=$MONGO_URI pannathatdev/product:latest
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: pannathatdev
+          password: dckr_pat_RUMz0NKUUwMZzFEElvaufKdNQ3g
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t pannathatdev/order:latest .
+          docker push pannathatdev/order:latest
+        working-directory: ./order-service
+
+      - name: Deploy to production
+        env:
+          MONGO_URI: mongodb+srv://pipo:Aa123654@pipo.gqdqli4.mongodb.net/order
+        run: |
+          echo "Deploying to production..."
+          docker run -d -p 8001:8001 -e MONGO_URI=$MONGO_URI pannathatdev/order:latest

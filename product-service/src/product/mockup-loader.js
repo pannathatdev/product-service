@@ -1,9 +1,9 @@
 // mockup-loader.js
 const axios = require('axios');
+const products = require('./mock-products.json');
+const orders = require('./mock-orders.json');
 
 async function loadMockupData() {
-    const products = require('./mock-products.json');
-    const orders = require('./mock-orders.json');
 
     try {
         await axios.post('http://localhost:8000/products/load', products);

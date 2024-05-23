@@ -42,14 +42,18 @@ jobs:
         working-directory: ./product-service
 
       - name: Build the Docker image
-        run: docker build -t product .
+        run: docker build -t product-service:latest .
+        working-directory: ./product-service
+
+      - name: Save Docker image to a file
+        run: docker save product-service:latest -o product-service.tar
         working-directory: ./product-service
 
       - name: Upload Docker image to GitHub Actions
         uses: actions/upload-artifact@v2
         with:
           name: product-service-image
-          path: product-service
+          path: ./product-service/product-service.tar
 
   deploy:
     runs-on: ubuntu-latest
@@ -58,12 +62,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      
+
       - name: Download Docker image from GitHub Actions
         uses: actions/download-artifact@v2
         with:
           name: product-service-image
           path: ./product-service
+
+      - name: Load Docker image
+        run: docker load -i ./product-service/product-service.tar
+        working-directory: ./product-service
 
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GHCR_USERNAME }} --password-stdin

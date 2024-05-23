@@ -8,8 +8,8 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post('load')
-  async create(@Body() createProductDto: CreateProductDto): Promise<Product> {
-    return this.productService.create(createProductDto);
+  async loadProducts(@Body() products: CreateProductDto[]) {
+    return await this.productService.loadMockup(products);
   }
 
   @Get()

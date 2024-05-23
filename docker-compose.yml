@@ -4,7 +4,7 @@ services:
   product:
     build: .
     ports:
-      - "8001:8000"
+      - "8000:8000"
     environment:
       - MONGO_URI=mongodb+srv://pipo:Aa123654@pipo.gqdqli4.mongodb.net/product
     networks:

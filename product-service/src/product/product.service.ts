@@ -2,18 +2,18 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Product, } from './schemas/product.schema';
+import { Product } from './schemas/product.schema';
 import { CreateProductDto } from './create-product.dto';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectModel(Product.name) private productModel: Model<Product>,
-  ) {}
+  ) { }
 
   async findAll(): Promise<Product[]> {
     return await this.productModel.find();
-  }  
+  }
 
   async findOne(id: string): Promise<Product> {
     return await this.productModel.findById(id).exec();
@@ -23,13 +23,13 @@ export class ProductService {
     const { name, description, price, quantity } = createProductDto;
     const newProduct = new this.productModel({ name, description, price, quantity });
     return await newProduct.save();
-}
+  }
 
   async delete(id: string): Promise<Product> {
     return await this.productModel.findByIdAndDelete(id);
-}
+  }
 
-async loadMockProducts(createProductDto: CreateProductDto[]): Promise<void> {
-  await this.productModel.insertMany(createProductDto);
-}
+  async loadMockup(products: CreateProductDto[]): Promise<Product[]> {
+    return await this.productModel.insertMany(products);
+  }
 }

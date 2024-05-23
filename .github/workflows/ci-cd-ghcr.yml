@@ -45,6 +45,12 @@ jobs:
         run: docker build -t product .
         working-directory: ./product-service
 
+      - name: Upload Docker image to GitHub Actions
+        uses: actions/upload-artifact@v2
+        with:
+          name: product-service-image
+          path: product-service
+
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -52,22 +58,18 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
+      
+      - name: Download Docker image from GitHub Actions
+        uses: actions/download-artifact@v2
         with:
-          username: pannathatdev
-          password: dckr_pat_RUMz0NKUUwMZzFEElvaufKdNQ3g
+          name: product-service-image
+          path: ./product-service
 
-      - name: Build and push Docker image
-        run: |
-          docker build -t pannathatdev/product:latest .
-          docker push pannathatdev/product:latest
-        working-directory: ./product-service
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GHCR_USERNAME }} --password-stdin
 
-      - name: Deploy to production
-        env:
-          MONGO_URI: mongodb+srv://pipo:Aa123654@pipo.gqdqli4.mongodb.net/product
-        run: |
-          echo "Deploying to production..."
-          docker run -d -p 8000:8000 -e MONGO_URI=$MONGO_URI pannathatdev/product:latest
+      - name: Tag image
+        run: docker tag product-service:latest ghcr.io/${{ secrets.GHCR_USERNAME }}/product-service:latest
+
+      - name: Push to GitHub Container Registry
+        run: docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/product-service:latest

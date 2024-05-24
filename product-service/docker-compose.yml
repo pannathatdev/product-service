@@ -1,16 +1,16 @@
-version: '3.7'
-
+version: '3'
 services:
-  product:
-    build: .
+  product-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     environment:
-      - MONGO_URI=mongodb+srv://pipo:Aa123654@pipo.gqdqli4.mongodb.net/product
+      - MONGO_URI=mongodb+srv://pipo:Aa123654@pipo.gqdqli4.mongodb.net/order
     networks:
       - app-network
-    depends_on:
-      - mongodb
+    container_name: product-service
 
   mongodb:
     image: mongo:latest
@@ -22,9 +22,8 @@ services:
     networks:
       - app-network
 
-networks:
-  app-network:
-    external: true
-
 volumes:
   mongodb_data:
+
+networks:
+  app-network:

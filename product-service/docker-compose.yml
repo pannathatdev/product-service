@@ -7,7 +7,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - MONGO_URI=mongodb+srv://pipo:Aa123654@pipo.gqdqli4.mongodb.net/order
+      - MONGO_URI=mongodb+srv://pipo:Aa123654@pipo.gqdqli4.mongodb.net/product
     networks:
       - app-network
     container_name: product-service

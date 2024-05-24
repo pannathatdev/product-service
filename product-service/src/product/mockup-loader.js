@@ -2,7 +2,7 @@ const axios = require('axios');
 
 async function loadMockupData() {
     try {
-        const productsUrl = 'https://raw.githubusercontent.com/pannathatdev/product-service/main/src/mock-products.json';
+        const productsUrl = 'https://raw.githubusercontent.com/pannathatdev/product-service/main/product-service/src/product/mock-products.json';
         const response = await axios.get(productsUrl);
         const products = response.data;
 

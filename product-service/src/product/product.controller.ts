@@ -16,4 +16,9 @@ export class ProductController {
   async create(@Body() createProductDto: CreateProductDto): Promise<Product> {
     return this.productService.create(createProductDto);
   }
+
+  @Post('load')
+  async loadMockupData(@Body() products: any) {
+    await this.productService.loadMockupData(products);
+  }
 }

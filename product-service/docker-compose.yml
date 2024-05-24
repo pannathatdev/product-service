@@ -1,29 +1,18 @@
 version: '3'
 services:
   product-service:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     ports:
       - "8000:8000"
-    environment:
-      - MONGO_URI=mongodb+srv://pipo:Aa123654@pipo.gqdqli4.mongodb.net/product
     networks:
       - app-network
-    container_name: product-service
 
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
+  order-service:
+    build: .
     ports:
-      - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
+      - "9000:9000"
     networks:
       - app-network
-
-volumes:
-  mongodb_data:
 
 networks:
   app-network:

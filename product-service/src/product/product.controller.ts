@@ -7,13 +7,13 @@ import { Product } from './schemas/product.schema';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @Post('load')
-  async loadProducts(@Body() products: CreateProductDto[]) {
-    return await this.productService.loadMockup(products);
-  }
-
   @Get()
   async findAll(): Promise<Product[]> {
     return this.productService.findAll();
+  }
+
+  @Post()
+  async create(@Body() createProductDto: CreateProductDto): Promise<Product> {
+    return this.productService.create(createProductDto);
   }
 }

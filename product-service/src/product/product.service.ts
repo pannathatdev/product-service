@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product } from './schemas/product.schema';
-import axios from 'axios';
 import { CreateProductDto } from './create-product.dto';
 
 @Injectable()
@@ -32,15 +31,5 @@ export class ProductService {
 
   async loadMockup(products: CreateProductDto[]): Promise<Product[]> {
     return await this.productModel.insertMany(products);
-  }
-  async loadMockupData(products: any) {
-    try {
-      const orderServiceUrl = 'http://order-service:9000/orders/load';
-      await axios.post(orderServiceUrl, products);
-      console.log('Mockup data loaded successfully.');
-    } catch (error) {
-      console.error('Failed to load mockup data:', error.message);
-      throw error;
-    }
   }
 }

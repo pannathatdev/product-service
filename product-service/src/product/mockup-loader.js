@@ -6,7 +6,7 @@ async function loadMockupData() {
         const response = await axios.get(productsUrl);
         const products = response.data;
 
-        await axios.post('http://localhost:8000/orders/load', products);
+        await axios.post('http://order-service:9000/orders/load', products);
         console.log('Mockup data loaded successfully.');
     } catch (error) {
         console.error('Failed to load mockup data:', error.message);

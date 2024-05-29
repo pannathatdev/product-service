@@ -38,19 +38,19 @@ jobs:
 
       - name: Install dependencies for product-service
         run: npm install
-        working-directory: ./product-service
+        working-directory: ./product-service/product-service
 
       - name: Install dependencies for order-service
         run: npm install
-        working-directory: ./order-service
+        working-directory: ./order-service/order-service
 
       - name: Run unit tests for product-service
         run: npm run test:unit
-        working-directory: ./product-service
+        working-directory: ./product-service/product-service
 
       - name: Run unit tests for order-service
         run: npm run test:unit
-        working-directory: ./order-service
+        working-directory: ./order-service/order-service
 
       - name: Load Mockup Data into MongoDB
         run: |
@@ -59,11 +59,11 @@ jobs:
 
       - name: Build the Docker image for product-service
         run: docker build -t product .
-        working-directory: ./product-service
+        working-directory: ./product-service/product-service
 
       - name: Build the Docker image for order-service
         run: docker build -t order .
-        working-directory: ./order-service
+        working-directory: ./order-service/order-service
 
   deploy:
     runs-on: ubuntu-latest

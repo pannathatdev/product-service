@@ -43,6 +43,11 @@ jobs:
       - name: Install dependencies for order-service
         run: npm install
         working-directory: ./order-service/order-service
+        
+      - name: Load Mockup Data into MongoDB
+        run: |
+          docker run --network host -v ${{ github.workspace }}/product-service/product-service/src/product:/data mongo mongoimport --host localhost --port 27017 --db testdb --collection products --file /data/mock-products.json
+          docker run --network host -v ${{ github.workspace }}/order-service/mock-data:/data mongo mongoimport --host localhost --port 27017 --db testdb --collection orders --file /data/order-data.json
 
       - name: Run unit tests for product-service
         run: npm run test:unit
@@ -51,11 +56,6 @@ jobs:
       - name: Run unit tests for order-service
         run: npm run test:unit
         working-directory: ./order-service/order-service
-
-      - name: Load Mockup Data into MongoDB
-        run: |
-          mongoimport --host localhost --port 27017 --db testdb --collection products --file ./product-service/product-service/src/product/mock-products.json
-          mongoimport --host localhost --port 27017 --db testdb --collection orders --file ./order-service/order-service/src/order/order-data.json
 
       - name: Build the Docker image for product-service
         run: docker build -t product .

@@ -1,5 +1,0 @@
-[
-    { "customerName": "Customer 1", "totalPrice": 500, "status": "pending" },
-    { "customerName": "Customer 2", "totalPrice": 700, "status": "processing" },
-    { "customerName": "Customer 3", "totalPrice": 900, "status": "completed" }
-]

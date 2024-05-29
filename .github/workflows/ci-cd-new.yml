@@ -45,9 +45,7 @@ jobs:
         working-directory: ./order-service/order-service
 
       - name: Install MongoDB Tools
-        run: |
-          apt-get update
-          apt-get install -y mongodb-clients
+        run: apt-get install -y mongodb-clients
 
       - name: Import Mock Data into MongoDB Atlas
         env:

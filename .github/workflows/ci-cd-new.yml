@@ -44,6 +44,9 @@ jobs:
         run: npm install
         working-directory: ./order-service/order-service
 
+      - name: Install MongoDB Tools
+        run: sudo apt-get update && sudo apt-get install -y mongodb-clients
+
       - name: Import Mock Data into MongoDB Atlas
         env:
           MONGO_URI: mongodb+srv://pipo:Aa123654@pipo.gqdqli4.mongodb.net/product

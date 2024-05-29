@@ -44,11 +44,13 @@ jobs:
         run: npm install
         working-directory: ./order-service/order-service
         
-      - name: Load Mockup Data into MongoDB
+      - name: Load Mockup Data into MongoDB Atlas
+        env:
+          MONGO_URI: mongodb+srv://pipo:Aa123654@pipo.gqdqli4.mongodb.net/product
         run: |
-          docker run --network host -v ${{ github.workspace }}/product-service/product-service/src/product:/data mongo mongoimport --host localhost --port 27017 --db testdb --collection products --file /data/mock-products.json
-          docker run --network host -v ${{ github.workspace }}/order-service/mock-data:/data mongo mongoimport --host localhost --port 27017 --db testdb --collection orders --file /data/order-data.json
-
+          docker run -v ${{ github.workspace }}/product-service/product-service/src/product:/data mongo mongoimport --uri $MONGO_URI --db product --collection products --file /data/mock-products.json --jsonArray
+          docker run -v ${{ github.workspace }}/order-service/mock-data:/data mongo mongoimport --uri $MONGO_URI --db product --collection orders --file /data/order-data.json --jsonArray
+          
       - name: Run unit tests for product-service
         run: npm run test:unit
         working-directory: ./product-service/product-service

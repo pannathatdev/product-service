@@ -54,8 +54,8 @@ jobs:
 
       - name: Load Mockup Data into MongoDB
         run: |
-          mongoimport --host localhost --port 27017 --db testdb --collection products --file ./product-service/product/product-data.json
-          mongoimport --host localhost --port 27017 --db testdb --collection orders --file ./order-service/order/order-data.json
+          mongoimport --host localhost --port 27017 --db testdb --collection products --file ./product-service/product-service/src/product/mock-products.json
+          mongoimport --host localhost --port 27017 --db testdb --collection orders --file ./order-service/order-service/src/order/order-data.json
 
       - name: Build the Docker image for product-service
         run: docker build -t product .
